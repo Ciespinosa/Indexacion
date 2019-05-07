@@ -210,7 +210,7 @@ vl &lt;-<span class="st"> </span>x&gt;<span class="dv">10</span> <span class="co
 x[vl]<span class="co">#Extraemos los datos en función del vector lógico creado</span></code></pre></div>
 <pre><code>##  [1] 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[cat==<span class="st">&quot;a&quot;</span>] <span class="co">#Usamos directamente la operación lógica</span></code></pre></div>
-<pre><code>##  [1]  3  5  9 13 15 17 21 25 27 31 33</code></pre>
+<pre><code>## [1]  3  9 11 13 19 25 27 31 37</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Un vector de números naturales negativos. Por medio de esta indexación se seleccionan todos los elementos del vector excepto los indicados con valores negativos.</li>
 </ol>
@@ -232,10 +232,10 @@ x[vl]<span class="co">#Extraemos los datos en función del vector lógico creado
 <p>El caso de los marco de datos podemos acceder a las variables (columnas), usando el nombre de la variable usando el signo <code>$</code>. Veamos un ejemplo:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">peso=</span><span class="kw">rnorm</span>(<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">5</span>), <span class="dt">tipo=</span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>),<span class="dv">5</span>))
 y$peso <span class="co">#selecciona toda la variable peso</span></code></pre></div>
-<pre><code>##  [1] 18.55897 21.82266 26.97697 11.46846 25.40587 16.02836 18.19805
-##  [8] 19.59017 19.30996 16.05184</code></pre>
+<pre><code>##  [1] 12.28621 20.11561 14.04268 22.18341 14.79159 21.53284 10.28939
+##  [8] 15.42777 27.80664 23.88808</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y$peso[y$tipo==<span class="st">&quot;a&quot;</span>] <span class="co">#selecciona la variable peso, las filas que</span></code></pre></div>
-<pre><code>## [1] 18.55897 26.97697 25.40587 18.19805 19.30996</code></pre>
+<pre><code>## [1] 12.28621 14.04268 14.79159 10.28939 27.80664</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">                    <span class="co">#corresponden a la variable tipo con elementos igual a &quot;a&quot;</span></code></pre></div>
 <p>En el segundo ejemplo vemos que, aunque y es una matriz, solo especifico las filas, esto es debido a que la primera parte (y$peso) es un vector por tanto tiene una sola dimensión.</p>
 <p>Para acceder a las listas podemos utilizar los nombres de cada elemento de la lista o el doble corchete. Veamos un ejemplo.</p>
@@ -292,11 +292,11 @@ x*<span class="dv">2</span>; <span class="kw">sqrt</span>(x); x^<span class="dv"
 <p>Muchas veces nos interesa ordenar un vector para esto podemos utilizar dos funciones; <code>order</code> y <code>sort</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">30</span>, <span class="dv">20</span>)
 z</code></pre></div>
-<pre><code>##  [1] 19 28 26 13  3 22 18  7 27 30  5 12  1  8 29  4 15 21  6 14</code></pre>
+<pre><code>##  [1] 30 10 21  2 23 13 25 16 28 12 18  5  4 24  7 14 29 19 17 22</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sort</span>(z)</code></pre></div>
-<pre><code>##  [1]  1  3  4  5  6  7  8 12 13 14 15 18 19 21 22 26 27 28 29 30</code></pre>
+<pre><code>##  [1]  2  4  5  7 10 12 13 14 16 17 18 19 21 22 23 24 25 28 29 30</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">order</span>(z, <span class="dt">decreasing=</span><span class="ot">FALSE</span>)</code></pre></div>
-<pre><code>##  [1] 13  5 16 11 19  8 14 12  4 20 17  7  1 18  6  3  9  2 15 10</code></pre>
+<pre><code>##  [1]  4 13 12 15  2 10  6 16  8 19 11 18  3 20  5 14  7  9 17  1</code></pre>
 <p>La diferencia entre estas dos funciones es que sort lo que hace es ordenar la función en orden ascendente. Mientras que order genera un vector con la posición de cada elemento, si cambiamos el argumento de decreasing a TRUE entonces el orden será decreciente.</p>
 </div>
 <div id="tabulando-datos" class="section level2">
@@ -364,33 +364,33 @@ cat3</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">list</span> (<span class="dt">a =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">4</span>), <span class="dt">b =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">12</span>), <span class="dt">c =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">25</span>))
 x</code></pre></div>
 <pre><code>## $a
-##  [1] 3.242402 2.810738 4.830310 3.579034 3.960608 5.952138 3.606361
-##  [8] 5.264920 4.027069 5.012329
+##  [1] 3.165584 3.699516 5.137581 2.875940 2.664640 3.420687 5.425567
+##  [8] 3.466509 4.890548 6.072096
 ## 
 ## $b
-##  [1] 11.92731 12.22381 10.15289 11.43621 14.26822 11.46823 11.77483
-##  [8] 12.12178 13.85900 12.80725
+##  [1] 10.42861 11.54605 11.75331 11.33343 12.16634 12.12219 11.14101
+##  [8] 12.74504 11.86451 12.54084
 ## 
 ## $c
-##  [1] 24.38460 23.41548 24.75969 26.61034 25.05949 24.17074 23.60931
-##  [8] 24.87941 24.65003 25.94415</code></pre>
+##  [1] 24.24999 23.90258 25.31845 25.79837 24.63625 24.94255 26.32585
+##  [8] 24.29334 24.24294 25.30948</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(x, mean); <span class="kw">lapply</span>(x, mean)</code></pre></div>
 <pre><code>##         a         b         c 
-##  4.228591 12.203954 24.748324</code></pre>
+##  4.081867 11.764132 24.901978</code></pre>
 <pre><code>## $a
-## [1] 4.228591
+## [1] 4.081867
 ## 
 ## $b
-## [1] 12.20395
+## [1] 11.76413
 ## 
 ## $c
-## [1] 24.74832</code></pre>
+## [1] 24.90198</code></pre>
 <p>Estas funciones nos permiten tener datos resumen de matrices y arreglos, pero puede ser que me interese realizar cálculos condicionados sobre una variable en función de los niveles de un factor, en este caso utilizaremos la función <code>tapply()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mercurio &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">55</span>, <span class="fl">0.020</span>, <span class="fl">0.003</span>) 
 
 <span class="kw">tapply</span>(mercurio, cat2, mean)</code></pre></div>
 <pre><code>##       bajo      medio       alto 
-## 0.01946286 0.01926909 0.01936922</code></pre>
+## 0.01976017 0.02013603 0.01975551</code></pre>
 <p>Lo que hacemos es usar el vector factor que generamos antes cat2 y calcular la media de valores de mercurio por cada nivel de contaminación.</p>
 </div>
 <div id="fusionando-datos" class="section level2">
@@ -413,18 +413,18 @@ abio&lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class
 datos1 &lt;-<span class="st"> </span><span class="kw">merge</span>(bio, abio, <span class="dt">by =</span><span class="st">&quot;sitio&quot;</span>)
 
 <span class="kw">head</span>(datos1, <span class="dv">5</span>); <span class="kw">head</span>(datos, <span class="dv">5</span>)</code></pre></div>
-<pre><code>##   sitio sp1 sp2        N          P
-## 1    a1  63  18 8.079113  1.0315444
-## 2    a2  48  15 8.742173  1.1514107
-## 3    a3  78  30 7.780969 -0.0571216
-## 4    a4  68  27 9.105341  1.6264326
-## 5    a5  58  48 8.407487  1.6340479</code></pre>
-<pre><code>##   sitio sp1 sp2 sitio        N          P
-## 1    a1  63  18    a5 8.407487  1.6340479
-## 2    a2  48  15    a4 9.105341  1.6264326
-## 3    a3  78  30    a1 8.079113  1.0315444
-## 4    a4  68  27    a2 8.742173  1.1514107
-## 5    a5  58  48    a3 7.780969 -0.0571216</code></pre>
+<pre><code>##   sitio sp1 sp2         N         P
+## 1    a1  51  22  8.716505 1.1960794
+## 2    a2  58  48  7.394692 1.2604294
+## 3    a3  67  36 10.027551 1.1776438
+## 4    a4  63  38  7.521442 1.0883413
+## 5    a5  36  34  7.143108 0.9335985</code></pre>
+<pre><code>##   sitio sp1 sp2 sitio         N         P
+## 1    a1  51  22    a4  7.521442 1.0883413
+## 2    a2  58  48    a5  7.143108 0.9335985
+## 3    a3  67  36    a3 10.027551 1.1776438
+## 4    a4  63  38    a1  8.716505 1.1960794
+## 5    a5  36  34    a2  7.394692 1.2604294</code></pre>
 <p>Como podemos ver los dos casos son completamente distintos, el que realmente nos interesa es la opción dos que la obtenemos con la función merge.</p>
 </div>
 </div>

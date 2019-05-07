@@ -3,12 +3,12 @@ title: "Indexación y operaciones"
 author: "Carlos Iván Espinosa"
 date: "06 de mayo de 2019"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     highlight: haddock
     number_sections: yes
     theme: cosmo
-    toc: yes
-  pdf_document:
     toc: yes
 ---
 <p> <br> </p>
