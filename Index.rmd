@@ -1,0 +1,296 @@
+---
+title: "Indexación y operaciones"
+author: "Carlos Iván Espinosa"
+date: "06 de mayo de 2019"
+output:
+  html_document:
+    highlight: haddock
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+  pdf_document:
+    toc: yes
+---
+<p> <br> </p>
+
+Pueden descargar este documento en pdf haciendo clic [aquí](https://github.com/Ciespinosa/Indexacion/blob/master/index.pdf)
+
+#Indexación
+
+Una vez creada una estructura de datos la flexibilidad de `R` para manipular los objetos es enorme, podemos seleccionar cualquier elemento o grupo de elementos y operar sobre ellos. La manipulación de los objetos depende de la dimensionalidad de los objetos, usaremos los corchetes`[]` para acceder a las diferentes dimensiones, dentro de cada objeto podemos acceder a la dimensión filas, columnas y hojas.  cada uno de estos elementos separados por una coma. Así, si tengo un vector (una dimensión), solo necesito especificar la dimensión filas, si tengo una matriz o una data.frame necesito especificar dos dimensiones, filas y columnas. Finalmente, si tengo un arreglo, necesito especificar tres dimensiones, filas, columnas y hojas.
+
+> objeto[filas,columnas,hojas]
+
+Veamos un ejemplo;
+
+```{r}
+
+x <- 1:30
+x[8:12]
+
+y <- matrix(1:9,3,3)
+y[1:2,3]
+
+z <- array(1:27,c(3,3,3))
+z[2:3,2,3]
+```
+
+Como vemos para el vector especificamos solamente las filas que queremos obtener (elementos del 8 al 12), para la matriz le dimos dos dimensiones los elementos de la fila uno y dos de la columna 3. Finalmente, en el arreglo le pedimos los elementos de la fila dos y tres, de la columna dos y de la hoja tres. Si queremos todos los elementos de alguna de las dimensiones dejamos el espacio en blanco. Así si me interesa tener todas las filas de la segunda columna de la matriz usaríamos:
+
+```{r}
+y[,2] #todas las filas de la columna dos
+y[2,] #todas las columnas de la fila dos
+```
+
+##Extracción de elementos
+
+La extracción de elementos del objeto puede realizarse de al menos 4 formas distintas.
+
+1. Un vector de números naturales, usamos un vector numérico que extrae los elementos que se encuentran en la posición determinada por el vector numérico, si el vector de extracción es 2:3 extrae los elementos de la posición dos y tres.
+
+```{r}
+
+x <- seq(1,40, by=2)
+x #todos los elementos del vector
+x[1:3] #los elementos de la posición uno a la tres
+x[c(1,3,4)] #los elementos en la posición uno, tres y cuatro
+```
+
+2. Un vector lógico de la misma longitud que el vector original. Podemos usar un vector lógico que permite extraer los elementos que cumplen la condición lógica. Podemos utilizar el mismo vector u otro vector.
+
+```{r}
+cat <- sample(c("a","b"), 20, replace =TRUE)
+vl <- x>10 #Generamos el vector lógico
+
+x[vl]#Extraemos los datos en función del vector lógico creado
+x[cat=="a"] #Usamos directamente la operación lógica
+
+```
+
+3. Un vector de números naturales negativos. Por medio de esta indexación se seleccionan todos los elementos del vector excepto los indicados con valores negativos.
+
+```{r}
+x[-(1:3)] #elementos que no están en posición uno a tres
+x[-c(1,3,4)] #elementos que no están en posición uno, tres y cuatro
+```
+
+4. Extracción de elementos que cumplen determinada condición Muchas veces resulta conveniente extraer de un vector las __posiciones__ que cumplen determinada condición
+
+```{r}
+a <- seq(1,30, by=3)
+which(a>20) #Las posiciones 8,9 y 10 sus elementos son mayores a 20
+
+a <- c (1,3,5,6,7,9,2) 
+
+which (a == 2) #Las posiciones 7 el elemento es igual a 2
+```
+
+La indexación de las matrices, marco de datos y los arreglos se pueden acceder bajo los mismos principios, únicamente debemos recordar que debemos manejar más de una dimensión.
+
+El caso de los marco de datos podemos acceder a las variables (columnas), usando el nombre de la variable usando el signo `$`. Veamos un ejemplo:
+
+```{r}
+y <- data.frame(peso=rnorm(10,20,5), tipo=rep(c("a","b"),5))
+y$peso #selecciona toda la variable peso
+
+y$peso[y$tipo=="a"] #selecciona la variable peso, las filas que
+                    #corresponden a la variable tipo con elementos igual a "a"
+```
+
+En el segundo ejemplo vemos que, aunque y es una matriz, solo especifico las filas, esto es debido a que la primera parte (y$peso) es un vector por tanto tiene una sola dimensión.
+
+Para acceder a las listas podemos utilizar los nombres de cada elemento de la lista o el doble corchete. Veamos un ejemplo.
+
+```{r}
+z <- list("a", matrix(letters[1:9],3,3), 1:20)#Creamos la matriz
+names(z) <- c("letra","mat","num") #le damos nombres
+
+z$letra #Extraemos por nombre
+z[[2]][,3] #Extraemos por posición
+
+```
+
+
+#Operaciones con los objetos
+
+Una de las enormes ventajas de R es que yo puedo utilizar operadores para modificar los objetos.  Estos operadores pueden ser utilizados para realizar operaciones con los mismos vectores.
+
+```{r}
+x <- 1:20
+x*2; sqrt(x); x^3
+
+```
+
+Existen algunas funciones que nos permiten tener información sobre el vector.
+
+```{r}
+
+sum(x) #nos devuelve la suma del vector
+length(x) #nos devuelve el largo del vector
+max(x) #nos devuelve el valor máximo del vector
+min(x) #nos devuelve el valor mínimo del vector
+median (x) #nos devuelve la mediana del vector
+mean(x) #nos devuelve la media del vector
+quantile(x) #nos devuelve los cuartiles del vector
+range (x)  #nos devuelve el rango del vector
+sd (x) #nos devuelve la desviación estándar del error
+
+y <- rep(c(25, 15, 5), 10)
+
+unique(y) #nos devuelve un vector con valores únicos
+duplicated(y) #nos devuelve un vector lógico indicándonos   si el elemento esta duplicado.
+
+```
+
+##Ordenando vectores
+
+Muchas veces nos interesa ordenar un vector para esto podemos utilizar dos funciones; `order` y `sort`
+
+```{r}
+
+z <- sample(1:30, 20)
+z
+sort(z)
+order(z, decreasing=FALSE)
+```
+
+La diferencia entre estas dos funciones es que sort lo que hace es ordenar la función en orden ascendente. Mientras que order genera un vector con la posición de cada elemento, si cambiamos el argumento de decreasing a TRUE entonces el orden será decreciente.
+
+##Tabulando datos
+
+Las variables categóricas nos pueden servir para tabular datos.  Vamos a utilizar el objeto que generamos antes _cat3_ y _cat2_ para generar una tabla con la frecuencia por cada nivel.
+
+```{r}
+cat <- rep(c("alto", "medio", "bajo"), c(10, 20,25))
+cat <- factor(cat) 
+levels(cat)
+cat1 <- relevel(cat, ref = "bajo")
+cat2 <- factor(cat, levels = c("bajo", "medio", "alto"))
+
+cat3 <- cat
+levels(cat3) <- list(no.contaminado = "bajo", contaminado= c("medio", "alto"))
+cat3
+table(cat3)
+table(cat2)
+```
+Como vemos la función `table` nos permite ver las frecuencias de cada nivel. Pero podríamos utilizar esta función para hacer una tabla de contingencia entre ambas variables.
+
+```{r}
+table(cat2, cat3)
+
+```
+Pero nos podría interesar no tener un dato de frecuencias sino de proporciones, para esto podemos utilizar la función `prop.table`.
+
+```{r}
+x <- table(cat2, cat3)
+prop.table(x,2)
+
+```
+La función prop.table funciona sobre un arreglo o tabla, el segundo argumento indica si la proporción la queremos por filas(1), columnas (2) 
+
+##Funciones apply
+
+Las funciones de la familia apply son de las funciones más utilizadas para manipular los datos.  Vamos a ver algunas de estas funciones.
+
+
+```{r}
+a <- matrix(1:12, 3,4)
+
+apply (a, 2, sum) 
+
+```
+
+
+La función `apply` nos permite obtener valores de una matriz usando funciones resumen. En este caso lo que hacemos es obtener la suma de las columnas.  La función apply requiere los siguientes argumentos; una matriz sobre la que se ejecutará una función (a), indicar si esta función queremos que la ejecute por filas (1), o por columnas (2), la función de resumen que queremos obtener, podemos utilizar todas las funciones que vimos para los vectores.
+
+La función apply() se puede ejecutar sobre una matriz, pero si tenemos una lista y queremos aplicar funciones resumen debemos ocupar funciones como `lapply()` o `sapply()`. La diferencia de estas dos funciones es que cuando usamos lapply() el resultado es una lista, y si usamos sapply() el resultado  es un vector.
+
+
+```{r}
+x <- list (a = rnorm(10, 4), b = rnorm(10, 12), c = rnorm(10, 25))
+x
+
+sapply(x, mean); lapply(x, mean)
+```
+
+Estas funciones nos permiten tener datos resumen de matrices y arreglos, pero puede ser que me interese realizar cálculos condicionados sobre una variable en función de los niveles de un factor, en este caso utilizaremos la función `tapply()`. 
+
+```{r}
+
+mercurio <- rnorm(55, 0.020, 0.003) 
+
+tapply(mercurio, cat2, mean)
+
+```
+
+Lo que hacemos es usar el vector factor que generamos antes cat2 y calcular la media de valores de mercurio por cada nivel de contaminación.
+
+
+##Fusionando datos
+
+Cuando trabajamos con datos una de las cosas que necesitamos muy a menudo es unir datos o matrices de datos.  Imaginemos que tenemos unos datos de contaminación con datos bióticos y por otra, datos abióticos, es posible que nos interese unir estas matrices, pero asegurarnos que los datos correspondan a cada estación de muestreo.
+
+
+```{r}
+
+bio<- data.frame(paste(rep(letters[1:5],c(5,5,5,5,5)),rep(1:5, 5), sep=""), 
+                 round(rnorm(25, 60, 15), 0),
+                 round(rnorm(25, 30, 10), 0))
+
+colnames(bio) <- c("sitio", "sp1", "sp2")
+
+
+abio<- data.frame(paste(rep(letters[1:5],c(5,5,5,5,5)), rep(sample(1:5, 5), 5), sep=""),
+                  rnorm(25, 8, 1),    
+                  rnorm(25, 1, 0.5))
+colnames(abio) <- c("sitio", "N", "P")
+
+```
+Bueno hemos generado dos matrices con datos bióticos y abióticos. Ahora vamos a unirlos usando dos funciones distintas para ver las diferencias.
+
+```{r}
+datos <- cbind(bio, abio)
+
+datos1 <- merge(bio, abio, by ="sitio")
+
+head(datos1, 5); head(datos, 5)
+
+```
+
+Como podemos ver los dos casos son completamente distintos, el que realmente nos interesa es la opción dos que la obtenemos con la función merge.
+
+#Ejercicios
+
+------
+  
+  1. Construir 3 vectores que contengan la siguiente información de 22 individuos:	
+  
+  -	edad: 4 personas de 18 años, 3 personas de 24 años, 6 personas de 30 años		
+y 9 personas de 35 años (ej. 18, 18, 18 ........)                                              	
+-	genero: deben estar ordenados masculino, femenino las 22 personas                    	
+-	peso: un vector que tenga un peso medio de 150 y una desviación de 25          
+
+2. Realizar algunas operaciones con los vectores                                   
+- Obtener la cantidad de libras/año de cada persona                            
+- La suma, valor máximo y mínimo, el promedio de los pesos de las mujeres y de los hombres                                                                  
+- Obtener un vector con los pesos de las mujeres y uno con el de hombres  
+
+- Obtener un vector con los pesos mayores de 115 y menores de 123  
+
+
+3. Con los datos proporcionados calcule lo siguiente:
+  
+  
+- Convertir el vector provincias en niveles
+- Obtenga datos de suma (sum), desviación estándar (sd),valores máximos (max) o mínimos (min) y conteo (length), por cada una de las provincias.
+
+
+
+```
+provincia <- c("loj", "azu", "zam", "mor", "mor", "oro", "gua", "gua",
+               "zam", "can", "mor", "can", "zam", "zam", "azu", "loj", "azu", "oro", 
+               "gua", "can", "zam", "mor", "mor", "gua", "azu", "rios", "mor", "can", "can", "rios")
+
+ingresos <- c(60, 49, 40, 61, 64, 60, 59, 54, 62, 69, 70, 42, 
+              56, 61, 61, 61, 58, 51, 48, 65, 49, 49, 41, 48, 52, 46, 59, 46, 58, 43)
+```
