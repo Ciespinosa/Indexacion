@@ -13,7 +13,7 @@ output:
 ---
 <p> <br> </p>
 
-Pueden descargar este documento en pdf haciendo clic [aquí](https://github.com/Ciespinosa/Indexacion/blob/master/index.pdf)
+Pueden descargar este documento en pdf haciendo clic [aquí](https://github.com/Ciespinosa/Indexacion/blob/master/Index.pdf)
 
 #Indexación
 
